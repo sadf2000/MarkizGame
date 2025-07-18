@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Маркiз</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+    #uiContainer {
+            position: absolute;  
+            top: 10px;           
+            left: 10px;          
+            color: black;       
+            font-family: sans-serif;
+            font-size: 16px;      
+            pointer-events: none; 
+        }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="FirstPersonNoclip.js"></script>
+  <div id="uiContainer">
+    <p id="textElement">Короче управление:</p>
+    <p id="textElement">WASDQE - Двигаться</p>
+      <p id="textElement">C+WASDQE - гонщик нелегальный</p>
+    <p id="textElement">Найдите все спрятанные маркизы за skybox или без, и вы сигмы</p>
+  </div>
+  <script>
+    
+    const scene = new THREE.Scene();
+
+    
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000); 
+    
+    const listener = new THREE.AudioListener();
+        camera.add(listener);
+
+        const sound = new THREE.Audio(listener);
+
+
+        const audioLoader = new THREE.AudioLoader();
+        audioLoader.load('mus.mp3', function (buffer) {  
+            sound.setBuffer(buffer);
+            sound.setLoop(true);
+            sound.setVolume(1);
+            sound.play();
+        });
+    
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+        
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load('texture.png'); 
+    const texture2 = textureLoader.load('texture.jpg');
+    const texture3 = textureLoader.load('texture3.jpg');
+
+    const texture4 = textureLoader.load('texture4.jpg');
+    const texture5 = textureLoader.load('texture5.jpg');
+    const texture6 = textureLoader.load('texture6.jpg');
+    const texture7 = textureLoader.load('poshalko.jpg');
+    const texture228 = textureLoader.load('rules.jpg');
+
+
+    const geometry = new THREE.BoxGeometry(1, 1, 1); 
+    const material = new THREE.MeshBasicMaterial({ map: texture });
+
+    const geometry2 = new THREE.BoxGeometry(1, 1, 1); 
+    const material2 = new THREE.MeshBasicMaterial({ map: texture2 });
+
+    const geometry7 = new THREE.BoxGeometry(1, 1, 1); 
+    const material7 = new THREE.MeshBasicMaterial({ map: texture7 });
+
+    const geometry4 = new THREE.BoxGeometry(1, 1, 1); 
+    const material4 = new THREE.MeshBasicMaterial({ map: texture4 });
+
+    const geometry5 = new THREE.BoxGeometry(10/2, 10/2, 1); 
+    const material5 = new THREE.MeshBasicMaterial({ map: texture5 });
+
+    const geometry6 = new THREE.BoxGeometry(1, 1, 1); 
+    const material6 = new THREE.MeshBasicMaterial({ map: texture6 });
+
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    const cube2 = new THREE.Mesh(geometry2, material2);
+    scene.add(cube2);
+
+    const cube3 = new THREE.Mesh(geometry7, material7);
+    scene.add(cube3);
+
+    const cube4 = new THREE.Mesh(geometry4, material4);
+    scene.add(cube4);
+    
+    const cube5 = new THREE.Mesh(geometry5, material5);
+    scene.add(cube5);
+
+    const cube6 = new THREE.Mesh(geometry6, material6);
+    scene.add(cube6);
+
+    // Спрятаны:
+    cube.position.z = -600
+    cube.position.y = 1000
+    //
+    cube2.position.z = 600
+    cube2.position.y = -1000
+    //
+    cube3.position.y = -10
+    cube3.position.x = -600
+    //
+    cube4.position.y += -5
+    //
+    cube6.position.y += -1000
+    //
+    cube5.position.y += 1.3429
+    cube5.position.z += -10
+    cube5.position.x += 10
+    
+
+    const planeGeometry = new THREE.PlaneGeometry(100, 100, 1, 1);
+    const planeMaterial = new THREE.MeshBasicMaterial({map: texture3, side: THREE.DoubleSide});
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.rotation.x = Math.PI / 2; 
+    scene.add(plane);
+    plane.position.y = -1
+
+ 
+    const textureSKYBOX = textureLoader.load('texture2.jpg');
+    textureSKYBOX.mapping = THREE.EquirectangularReflectionMapping;
+
+    const geometryd = new THREE.BoxGeometry(500, 500, 500)
+    geometryd.scale(-1, 1, 1);
+    const material3 = new THREE.MeshBasicMaterial({ map: textureSKYBOX });
+    const skybox = new THREE.Mesh(geometryd, material3);
+    scene.add(skybox);
+
+  
+    
+
+    const material228 = new THREE.MeshBasicMaterial({ map: texture228 });
+
+
+        const geometry228 = new THREE.BoxGeometry(10, 10, 1);
+
+
+        const cube228 = new THREE.Mesh(geometry228, material228);
+
+
+        scene.add(cube228);
+
+        cube228.position.z -= 10
+        cube228.position.y += 4.1
+
+        const controls = new FirstPersonControls(camera, renderer.domElement);
+        controls.movementSpeed = 5;
+        controls.lookSpeed = 0.002;
+
+        scene.add(controls.getObject()); 
+        controls.yawObject.position.y = 0;
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      cube.rotation.x += 0.01; 
+      cube.rotation.y += 0.01; 
+
+      cube2.rotation.x -= 0.01; 
+      cube2.rotation.y -= 0.01;
+
+      //skybox.rotation.x -= 0.01;
+      //skybox.rotation.y -= 0.01;
+
+      
+
+      plane.rotation.z -= 0.01;
+      const delta = 0.02; 
+      controls.update(delta);
+      
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
